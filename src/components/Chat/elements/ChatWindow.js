@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
+import dayjs from "dayjs"
 
 import { Avatar, Box } from "@material-ui/core"
 
@@ -13,8 +14,10 @@ function ChatWindow({
 }) {
   const messagesRef = useRef()
   useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight)
+    const $elm = messagesRef.current
+
+    if ($elm?.scrollTo) {
+      $elm.scrollTo(0, $elm.scrollHeight)
     }
   }, [messages])
 
@@ -56,17 +59,16 @@ function ChatWindow({
                 <Avatar src={interlocator.avatar} />
               )}
             </Box>
-            <Box
-              component="pre"
-              width="100%"
-              textAlign={msg.isMessageByMe ? "right" : "left"}
-            >
-              {msg.text}
+            <Box width="100%" textAlign={msg.isMessageByMe ? "right" : "left"}>
+              <pre>{msg.text}</pre>
+              <Box mt="20px" fontSize="14px" color="gray" component="span">
+                {dayjs(msg.date).format("HH:mm:ss")}
+              </Box>
             </Box>
           </Box>
         ))}
       </Box>
-      <Box>{form}</Box>
+      {form}
     </Box>
   )
 }
