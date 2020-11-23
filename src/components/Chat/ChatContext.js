@@ -58,13 +58,7 @@ export const useChatContext = () => useContext(ChatContext)
 export const { sendMessage } = slice.actions
 
 export function getLastInterlocutorsMessageId(messages) {
-  const interlocutorsMessages = messages.filter((item) => !item.isMessageByMe)
-
-  if (!interlocutorsMessages.length) {
-    return null
-  }
-
-  return interlocutorsMessages[interlocutorsMessages.length - 1].id
+  return messages.filter((item) => !item.isMessageByMe).reverse()[0]?.id
 }
 
 export function ChatProvider({ children }) {
